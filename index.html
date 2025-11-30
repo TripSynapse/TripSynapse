@@ -12,6 +12,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
             theme: {
                 extend: {
                     fontFamily: {
@@ -20,9 +21,9 @@
                     colors: {
                         brand: {
                             dark: '#0f172a',
-                            blue: '#00529B',   /* Updated from logo: Deep Blue */
-                            purple: '#9333EA', /* Updated from logo: Vibrant Purple */
-                            orange: '#F97316', /* Updated from logo: Bright Orange */
+                            blue: '#00529B',
+                            purple: '#9333EA',
+                            orange: '#F97316',
                         }
                     }
                 }
@@ -30,7 +31,6 @@
         }
     </script>
     <style>
-        /* Updated Gradient to match the logo's specific flow: Blue -> Purple -> Orange */
         .text-gradient {
             background: linear-gradient(90deg, #00529B 0%, #9333EA 50%, #F97316 100%);
             -webkit-background-clip: text;
@@ -53,10 +53,28 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Fade animation for hotel switch */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-orange-100 selection:text-orange-900">
+<body
+    class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white font-sans antialiased selection:bg-orange-100 selection:text-orange-900 transition-colors duration-300">
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-5 bg-transparent">
@@ -64,35 +82,65 @@
             <div class="flex justify-between items-center">
                 <!-- Logo -->
                 <div class="flex items-center space-x-3">
-                    <!-- IMPORTANT: Save your logo image as logo.jpg in the same folder -->
                     <img src="logo.jpg"
                         onerror="this.src='https://placehold.co/100x100?text=Logo';this.style.borderRadius='10px'"
-                        alt="TripSynapse Logo" class="h-10 w-auto">
-                    <span class="text-xl font-bold text-slate-900 tracking-tight">TripSynapse</span>
+                        alt="TripSynapse Logo" class="h-10 w-auto brand-logo transition-opacity duration-300">
+                    <span class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">TripSynapse</span>
                 </div>
 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#how-it-works"
-                        class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">How it
-                        Works</a>
-                    <a href="#why-us"
-                        class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">Why Us</a>
-                    <a href="#use-cases"
-                        class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">Use Cases</a>
-                    <a href="#pricing"
-                        class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">Pricing</a>
-                    <a href="#faq"
-                        class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">FAQ</a>
-                    <button
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#how-it-works" data-key="nav.howItWorks"
+                        class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">How
+                        it Works</a>
+                    <a href="#why-us" data-key="nav.whyUs"
+                        class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Why
+                        Us</a>
+                    <a href="#use-cases" data-key="nav.useCases"
+                        class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Use
+                        Cases</a>
+                    <a href="#pricing" data-key="nav.pricing"
+                        class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Pricing</a>
+                    <a href="#faq" data-key="nav.faq"
+                        class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">FAQ</a>
+
+                    <!-- Language Toggle Desktop -->
+                    <button onclick="toggleLanguage()"
+                        class="flex items-center justify-center px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-brand-blue dark:hover:border-brand-orange transition-all bg-white dark:bg-slate-800 ml-2 hover:shadow-sm">
+                        <span id="lang-code-desktop" class="text-sm font-bold text-slate-700 dark:text-white">EN</span>
+                    </button>
+
+                    <!-- Theme Toggle Desktop -->
+                    <button onclick="toggleTheme()"
+                        class="flex items-center justify-center p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        title="Toggle Dark Mode">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+
+                    <button data-key="nav.cta"
                         class="bg-gradient-brand hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-blue/20 text-sm">
-                        Try it free
+                        Join the waitlist
                     </button>
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-slate-600 focus:outline-none">
+                <div class="md:hidden flex items-center space-x-3">
+                    <!-- Theme Toggle Mobile -->
+                    <button onclick="toggleTheme()"
+                        class="flex items-center justify-center p-1.5 rounded-full text-slate-600 dark:text-slate-300">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+
+                    <!-- Language Toggle Mobile (Header) -->
+                    <button onclick="toggleLanguage()"
+                        class="flex items-center justify-center px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-brand-blue transition-all">
+                        <span id="lang-code-mobile-header"
+                            class="text-xs font-bold text-slate-700 dark:text-white">EN</span>
+                    </button>
+
+                    <button id="mobile-menu-btn" class="text-slate-600 dark:text-white focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
@@ -101,32 +149,35 @@
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu"
-            class="hidden md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 shadow-xl">
+            class="hidden md:hidden absolute top-full left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-xl">
             <div class="px-4 py-6 space-y-4 flex flex-col">
-                <a href="#how-it-works"
-                    class="text-base font-medium text-slate-600 py-2 border-b border-slate-50 mobile-link">How it
-                    Works</a>
-                <a href="#why-us"
-                    class="text-base font-medium text-slate-600 py-2 border-b border-slate-50 mobile-link">Why Us</a>
-                <a href="#use-cases"
-                    class="text-base font-medium text-slate-600 py-2 border-b border-slate-50 mobile-link">Use Cases</a>
-                <a href="#pricing"
-                    class="text-base font-medium text-slate-600 py-2 border-b border-slate-50 mobile-link">Pricing</a>
-                <a href="#faq"
-                    class="text-base font-medium text-slate-600 py-2 border-b border-slate-50 mobile-link">FAQ</a>
-                <button class="bg-gradient-brand text-white w-full py-3 rounded-lg font-bold mt-2">Try it free</button>
+                <a href="#how-it-works" data-key="nav.howItWorks"
+                    class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">How
+                    it Works</a>
+                <a href="#why-us" data-key="nav.whyUs"
+                    class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Why
+                    Us</a>
+                <a href="#use-cases" data-key="nav.useCases"
+                    class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Use
+                    Cases</a>
+                <a href="#pricing" data-key="nav.pricing"
+                    class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Pricing</a>
+                <a href="#faq" data-key="nav.faq"
+                    class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">FAQ</a>
+                <button data-key="nav.cta"
+                    class="bg-gradient-brand text-white w-full py-3 rounded-lg font-bold mt-2">Join the
+                    waitlist</button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <header class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        <!-- Background Blobs - Updated colors -->
         <div
-            class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-50 z-0 pointer-events-none">
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 dark:bg-brand-blue/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-50 z-0 pointer-events-none transition-colors duration-300">
         </div>
         <div
-            class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-100 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 opacity-50 z-0 pointer-events-none">
+            class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-100 dark:bg-brand-orange/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 opacity-50 z-0 pointer-events-none transition-colors duration-300">
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -135,104 +186,123 @@
                 <!-- Text Content -->
                 <div class="text-center lg:text-left">
                     <div
-                        class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-brand-blue text-xs font-bold uppercase tracking-wide mb-6 border border-blue-100">
-                        <i class="fas fa-star mr-2 text-yellow-500"></i> New: Google Maps Integration
+                        class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-brand-blue dark:text-blue-300 text-xs font-bold uppercase tracking-wide mb-6 border border-blue-100 dark:border-blue-800">
+                        <i class="fas fa-star mr-2 text-yellow-500"></i> <span data-key="hero.new">New: Google Maps
+                            Integration</span>
                     </div>
-                    <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
+                    <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-[1.1]"
+                        data-key="hero.title">
                         Stop reading <br />
-                        <span class="text-gradient">300 reviews.</span><br />
+                        <span class="text-gradient">300+ reviews.</span><br />
                         Get one smart answer.
                     </h1>
-                    <p class="text-xl text-slate-600 mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                    <p class="text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0"
+                        data-key="hero.subtitle">
                         TripSynapse's AI reads reviews from every platform to give you a clear summary, a trusted score,
                         and the honest truth about your hotel.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                         <button
                             class="bg-gradient-brand hover:opacity-90 text-white px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-lg shadow-brand-blue/30 flex items-center justify-center gap-2">
-                            Try it on a hotel <i class="fas fa-arrow-right"></i>
+                            <span data-key="hero.ctaPrimary">Join the waitlist</span> <i class="fas fa-arrow-right"></i>
                         </button>
                         <button
-                            class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-8 py-4 rounded-full text-lg font-bold transition-all hover:shadow-md">
-                            See how it works
+                            class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-full text-lg font-bold transition-all hover:shadow-md">
+                            <span data-key="hero.ctaSecondary">See how it works</span>
                         </button>
                     </div>
-                    <p class="mt-4 text-sm text-slate-500">No credit card required • Works with all major sites</p>
+                    <p class="mt-4 text-sm text-slate-500 dark:text-slate-400" data-key="hero.note">No credit card
+                        required • Works with all major sites</p>
                 </div>
 
                 <!-- Mockup Image -->
                 <div class="relative mx-auto w-full max-w-md lg:max-w-full group perspective-1000">
-                    <!-- Decorative Elements -->
                     <div class="absolute top-10 -right-10 w-24 h-24 bg-brand-orange rounded-full opacity-20 blur-xl">
                     </div>
                     <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-brand-blue rounded-full opacity-20 blur-xl">
                     </div>
 
-                    <!-- Card Container -->
                     <div
-                        class="relative bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform rotate-2 hover:rotate-0 transition-all duration-500 ease-out">
-                        <!-- Browser Bar -->
-                        <div class="bg-slate-50 border-b border-slate-100 p-4 flex items-center space-x-2">
+                        class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transform rotate-2 hover:rotate-0 transition-all duration-500 ease-out">
+                        <div
+                            class="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 p-4 flex items-center space-x-2">
                             <div class="w-3 h-3 rounded-full bg-red-400"></div>
                             <div class="w-3 h-3 rounded-full bg-amber-400"></div>
                             <div class="w-3 h-3 rounded-full bg-green-400"></div>
                             <div class="flex-1 text-center text-xs font-medium text-slate-400 truncate ml-2">
-                                tripsynapse.ai/report/grand-hotel</div>
+                                tripsynapse.ai/report/search</div>
                         </div>
 
-                        <!-- Content -->
-                        <div class="p-6">
+                        <div class="p-6" id="mockup-content">
+                            <!-- Dynamic Content populated by JS -->
                             <div class="flex justify-between items-start mb-6">
                                 <div>
-                                    <h3 class="text-2xl font-bold text-slate-900">Grand Plaza Resort</h3>
-                                    <div class="flex items-center text-slate-500 text-sm mt-1">
-                                        <i class="fas fa-map-marker-alt mr-1"></i> Barcelona, Spain
+                                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white transition-opacity duration-500"
+                                        id="hotel-name">Grand Continental</h3>
+                                    <div
+                                        class="flex items-center text-slate-500 dark:text-slate-400 text-sm mt-1 transition-opacity duration-500">
+                                        <i class="fas fa-map-marker-alt mr-1"></i> <span id="hotel-location">Bucharest,
+                                            Romania</span>
                                     </div>
                                 </div>
-                                <div
-                                    class="bg-gradient-brand text-white px-4 py-2 rounded-lg text-center shadow-lg shadow-brand-blue/20">
-                                    <div class="text-2xl font-bold">8.7</div>
-                                    <div class="text-[10px] uppercase font-bold opacity-80">Trust Score</div>
+                                <div id="score-box"
+                                    class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-center shadow-lg transition-colors duration-500">
+                                    <div class="text-2xl font-bold" id="hotel-score">8.7</div>
+                                    <div class="text-[10px] uppercase font-bold opacity-80"
+                                        data-key="mockup.scoreLabel">Trust Score</div>
                                 </div>
                             </div>
 
                             <div class="space-y-4">
-                                <!-- AI Summary Box -->
-                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <div
+                                    class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 transition-opacity duration-500">
                                     <div class="flex items-center gap-2 mb-2">
                                         <i class="fas fa-brain text-brand-purple"></i>
-                                        <span class="font-bold text-sm text-brand-purple">AI Summary</span>
+                                        <span class="font-bold text-sm text-brand-purple"
+                                            data-key="mockup.aiSummaryLabel">AI Summary</span>
                                     </div>
-                                    <p class="text-sm text-slate-600 leading-relaxed">
-                                        Excellent location near the beach. Most guests love the rooftop pool and
-                                        breakfast variety. However, several recent reviews mention construction noise on
-                                        the east side starting at 8 AM.
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
+                                        id="hotel-summary">
+                                        Excellent historic hotel in the city center. Guests love the architecture and
+                                        breakfast. Some mention expensive parking.
                                     </p>
                                 </div>
 
-                                <!-- Pros/Cons -->
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="p-3 bg-green-50 rounded-lg border border-green-100">
-                                        <div class="text-xs font-bold text-green-700 uppercase mb-2">Pros</div>
-                                        <ul class="text-xs text-slate-700 space-y-1">
+                                    <div
+                                        class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-100 dark:border-green-800 transition-opacity duration-500">
+                                        <div class="text-xs font-bold text-green-700 dark:text-green-400 uppercase mb-2"
+                                            data-key="mockup.prosLabel">Pros</div>
+                                        <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                                             <li class="flex items-start"><i
-                                                    class="fas fa-check text-green-600 mr-1.5 mt-0.5"></i> Modern rooms
-                                            </li>
+                                                    class="fas fa-check text-green-600 dark:text-green-400 mr-1.5 mt-0.5"></i>
+                                                <span id="hotel-pro1">Central Location</span></li>
                                             <li class="flex items-start"><i
-                                                    class="fas fa-check text-green-600 mr-1.5 mt-0.5"></i> Great
-                                                breakfast</li>
+                                                    class="fas fa-check text-green-600 dark:text-green-400 mr-1.5 mt-0.5"></i>
+                                                <span id="hotel-pro2">Historic Building</span></li>
                                         </ul>
                                     </div>
-                                    <div class="p-3 bg-red-50 rounded-lg border border-red-100">
-                                        <div class="text-xs font-bold text-red-700 uppercase mb-2">Cons</div>
-                                        <ul class="text-xs text-slate-700 space-y-1">
+                                    <div
+                                        class="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-100 dark:border-red-800 transition-opacity duration-500">
+                                        <div class="text-xs font-bold text-red-700 dark:text-red-400 uppercase mb-2"
+                                            data-key="mockup.consLabel">Cons</div>
+                                        <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                                             <li class="flex items-start"><i
-                                                    class="fas fa-times text-red-600 mr-1.5 mt-0.5"></i> Slow Elevators
-                                            </li>
+                                                    class="fas fa-times text-red-600 dark:text-red-400 mr-1.5 mt-0.5"></i>
+                                                <span id="hotel-con1">Expensive Parking</span></li>
                                             <li class="flex items-start"><i
-                                                    class="fas fa-times text-red-600 mr-1.5 mt-0.5"></i> Noise (East
-                                                side)</li>
+                                                    class="fas fa-times text-red-600 dark:text-red-400 mr-1.5 mt-0.5"></i>
+                                                <span id="hotel-con2">Small Gym</span></li>
                                         </ul>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-center gap-2 mt-2" id="hotel-dots">
+                                    <div class="w-2 h-2 rounded-full bg-slate-800 dark:bg-white transition-colors">
+                                    </div>
+                                    <div class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors">
+                                    </div>
+                                    <div class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors">
                                     </div>
                                 </div>
                             </div>
@@ -243,380 +313,316 @@
         </div>
     </header>
 
-    <!-- NEW: Launch Countdown Section -->
+    <!-- Countdown -->
     <section class="py-12 bg-gradient-brand text-white">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold mb-8">Official Launching In</h2>
+            <h2 class="text-2xl md:text-3xl font-bold mb-8" data-key="countdown.title">Official Launching In</h2>
             <div class="flex justify-center gap-4 md:gap-8 text-center" id="countdown-container">
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
                     <div id="days" class="text-3xl md:text-4xl font-bold">00</div>
-                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Days</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80" data-key="countdown.days">Days</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
                     <div id="hours" class="text-3xl md:text-4xl font-bold">00</div>
-                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Hours</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80" data-key="countdown.hours">Hours</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
                     <div id="minutes" class="text-3xl md:text-4xl font-bold">00</div>
-                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Mins</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80" data-key="countdown.mins">Mins</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
                     <div id="seconds" class="text-3xl md:text-4xl font-bold">00</div>
-                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Secs</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80" data-key="countdown.secs">Secs</div>
                 </div>
             </div>
-            <p class="mt-8 text-blue-100 text-sm font-medium">10 December 2025 • Mark your calendars</p>
+            <p class="mt-8 text-blue-100 text-sm font-medium" data-key="countdown.date">10 December 2025 • Mark your
+                calendars</p>
         </div>
     </section>
 
     <!-- The Problem Section -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Review Fatigue is Real</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Booking a hotel shouldn't feel like a research
-                    project. Why is it so hard to get a straight answer?</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4"
+                    data-key="problem.title">Review Fatigue is Real</h2>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto" data-key="problem.subtitle">
+                    Booking a hotel shouldn't feel like a research project. Why is it so hard to get a straight answer?
+                </p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-lg transition-shadow">
-                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center shadow-sm mb-6">
+                <div
+                    class="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all">
+                    <div
+                        class="bg-white dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center shadow-sm mb-6">
                         <i class="fas fa-chart-line text-2xl text-brand-orange"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Overwhelming Volume</h3>
-                    <p class="text-slate-600 leading-relaxed">Who has time to read 300+ reviews across 4 different sites
-                        just to book one night?</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3" data-key="problem.card1.title">
+                        Overwhelming Volume</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-key="problem.card1.text">Who has
+                        time to read 300+ reviews across 4 different sites just to book one night?</p>
                 </div>
-                <!-- Card 2 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-lg transition-shadow">
-                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center shadow-sm mb-6">
+                <div
+                    class="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all">
+                    <div
+                        class="bg-white dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center shadow-sm mb-6">
                         <i class="fas fa-exclamation-circle text-2xl text-brand-purple"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Hard to Trust</h3>
-                    <p class="text-slate-600 leading-relaxed">Fake reviews, paid bots, and biased rants make it
-                        impossible to know the truth.</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3" data-key="problem.card2.title">
+                        Hard to Trust</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-key="problem.card2.text">Fake
+                        reviews, paid bots, and biased rants make it impossible to know the truth.</p>
                 </div>
-                <!-- Card 3 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-lg transition-shadow">
-                    <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center shadow-sm mb-6">
+                <div
+                    class="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 hover:shadow-lg transition-all">
+                    <div
+                        class="bg-white dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center shadow-sm mb-6">
                         <i class="fas fa-clock text-2xl text-brand-blue"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Time Wasted</h3>
-                    <p class="text-slate-600 leading-relaxed">Average travelers spend 5+ hours researching hotels. Get
-                        your weekend back.</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3" data-key="problem.card3.title">
+                        Time Wasted</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-key="problem.card3.text">Average
+                        travelers spend 5+ hours researching hotels. Get your weekend back.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- How It Works -->
-    <section id="how-it-works" class="py-24 bg-slate-900 text-white relative overflow-hidden">
+    <section id="how-it-works"
+        class="py-24 bg-slate-900 dark:bg-slate-900 text-white relative overflow-hidden border-t dark:border-slate-800">
         <div class="absolute inset-0 opacity-10"
             style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 40px 40px;"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold mb-4">How TripSynapse works</h2>
-                <p class="text-xl text-slate-400">Three simple steps to smarter travel decisions.</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4" data-key="works.title">How TripSynapse works</h2>
+                <p class="text-xl text-slate-400" data-key="works.subtitle">Three simple steps to smarter travel
+                    decisions.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-12 relative">
-                <!-- Connecting Line (Desktop) -->
                 <div
                     class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-slate-900 via-brand-blue to-slate-900 z-0">
                 </div>
 
-                <!-- Step 1 -->
                 <div class="relative z-10 flex flex-col items-center text-center">
                     <div
                         class="w-24 h-24 bg-slate-800 rounded-full border-4 border-slate-700 flex items-center justify-center mb-6 shadow-xl">
                         <span class="text-3xl font-bold text-brand-blue">1</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Paste or Search</h3>
-                    <p class="text-slate-400 px-4">Simply paste a hotel link or search your destination directly on our
-                        platform.</p>
+                    <h3 class="text-xl font-bold mb-3" data-key="works.step1.title">Paste or Search</h3>
+                    <p class="text-slate-400 px-4" data-key="works.step1.text">Simply paste a hotel link or search your
+                        destination directly on our platform.</p>
                 </div>
-                <!-- Step 2 -->
                 <div class="relative z-10 flex flex-col items-center text-center">
                     <div
                         class="w-24 h-24 bg-slate-800 rounded-full border-4 border-slate-700 flex items-center justify-center mb-6 shadow-xl">
                         <span class="text-3xl font-bold text-brand-purple">2</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">AI Analysis</h3>
-                    <p class="text-slate-400 px-4">Our engine reads thousands of reviews from Booking, Airbnb, and
-                        Expedia in seconds.</p>
+                    <h3 class="text-xl font-bold mb-3" data-key="works.step2.title">AI Analysis</h3>
+                    <p class="text-slate-400 px-4" data-key="works.step2.text">Our engine currently reads thousands of
+                        reviews from Google Maps in seconds, and we are currently working on integrating it with
+                        Booking, Airbnb, and Expedia.</p>
                 </div>
-                <!-- Step 3 -->
                 <div class="relative z-10 flex flex-col items-center text-center">
                     <div
                         class="w-24 h-24 bg-slate-800 rounded-full border-4 border-slate-700 flex items-center justify-center mb-6 shadow-xl">
                         <span class="text-3xl font-bold text-brand-orange">3</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Get Answers</h3>
-                    <p class="text-slate-400 px-4">Receive a single, unbiased summary with a clear Trust Score and
-                        honest pros & cons.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Trust Us -->
-    <section id="why-us" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Why Trust TripSynapse?</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">We are building the most objective travel tool on
-                    the web.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Trust Pillar 1 -->
-                <div
-                    class="p-6 bg-slate-50 rounded-xl hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-slate-100">
-                    <div
-                        class="mb-4 bg-white w-12 h-12 rounded-lg flex items-center justify-center shadow-sm border border-slate-100">
-                        <i class="fas fa-globe text-brand-blue text-lg"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Multi-Platform</h4>
-                    <p class="text-sm text-slate-600 leading-relaxed">We aggregate data from every major booking site to
-                        give you the full picture.</p>
-                </div>
-                <!-- Trust Pillar 2 -->
-                <div
-                    class="p-6 bg-slate-50 rounded-xl hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-slate-100">
-                    <div
-                        class="mb-4 bg-white w-12 h-12 rounded-lg flex items-center justify-center shadow-sm border border-slate-100">
-                        <i class="fas fa-shield-alt text-brand-blue text-lg"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Scam Detection</h4>
-                    <p class="text-sm text-slate-600 leading-relaxed">Our algorithms flag suspicious patterns and
-                        exclude likely fake reviews.</p>
-                </div>
-                <!-- Trust Pillar 3 -->
-                <div
-                    class="p-6 bg-slate-50 rounded-xl hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-slate-100">
-                    <div
-                        class="mb-4 bg-white w-12 h-12 rounded-lg flex items-center justify-center shadow-sm border border-slate-100">
-                        <i class="fas fa-money-bill-wave text-brand-blue text-lg"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">No Paid Rank</h4>
-                    <p class="text-sm text-slate-600 leading-relaxed">Hotels cannot pay to improve their score. We work
-                        only for you, the traveler.</p>
-                </div>
-                <!-- Trust Pillar 4 -->
-                <div
-                    class="p-6 bg-slate-50 rounded-xl hover:bg-white hover:shadow-md transition-all border border-transparent hover:border-slate-100">
-                    <div
-                        class="mb-4 bg-white w-12 h-12 rounded-lg flex items-center justify-center shadow-sm border border-slate-100">
-                        <i class="fas fa-balance-scale text-brand-blue text-lg"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Objective Stats</h4>
-                    <p class="text-sm text-slate-600 leading-relaxed">We don't sugarcoat. If the Wi-Fi is slow or the
-                        pool is dirty, we'll tell you.</p>
+                    <h3 class="text-xl font-bold mb-3" data-key="works.step3.title">Get Answers</h3>
+                    <p class="text-slate-400 px-4" data-key="works.step3.text">Receive a single, unbiased summary with a
+                        clear Trust Score and honest pros & cons.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Use Cases -->
-    <section id="use-cases" class="py-20 bg-slate-900 text-white">
+    <section id="use-cases" class="py-20 bg-slate-900 text-white border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Case 1 -->
                 <div
                     class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-brand-blue transition-colors group">
                     <div
                         class="mb-6 p-4 bg-slate-700 rounded-full inline-block group-hover:bg-brand-blue transition-colors">
                         <i class="fas fa-briefcase text-2xl text-slate-300 group-hover:text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">For Business</h3>
-                    <p class="text-slate-400 leading-relaxed">Find quiet rooms with reliable Wi-Fi instantly. No
-                        surprises during your big presentation trip.</p>
+                    <h3 class="text-2xl font-bold mb-3" data-key="usecase.case1.title">For Business</h3>
+                    <p class="text-slate-400 leading-relaxed" data-key="usecase.case1.text">Find quiet rooms with
+                        reliable Wi-Fi instantly. No surprises during your big presentation trip.</p>
                 </div>
-                <!-- Case 2 -->
                 <div
                     class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-brand-blue transition-colors group">
                     <div
                         class="mb-6 p-4 bg-slate-700 rounded-full inline-block group-hover:bg-brand-blue transition-colors">
                         <i class="fas fa-map-marked-alt text-2xl text-slate-300 group-hover:text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">For Holidays</h3>
-                    <p class="text-slate-400 leading-relaxed">Ensure the 'ocean view' isn't actually a 'parking lot
-                        view'. Make every vacation day count.</p>
+                    <h3 class="text-2xl font-bold mb-3" data-key="usecase.case2.title">For Holidays</h3>
+                    <p class="text-slate-400 leading-relaxed" data-key="usecase.case2.text">Ensure the 'ocean view'
+                        isn't actually a 'parking lot view'. Make every vacation day count.</p>
                 </div>
-                <!-- Case 3 -->
                 <div
                     class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-brand-blue transition-colors group">
                     <div
                         class="mb-6 p-4 bg-slate-700 rounded-full inline-block group-hover:bg-brand-blue transition-colors">
                         <i class="fas fa-coffee text-2xl text-slate-300 group-hover:text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3">Digital Nomads</h3>
-                    <p class="text-slate-400 leading-relaxed">Verify internet speeds and workspace comfort before you
-                        book your month-long stay.</p>
+                    <h3 class="text-2xl font-bold mb-3" data-key="usecase.case3.title">Digital Nomads</h3>
+                    <p class="text-slate-400 leading-relaxed" data-key="usecase.case3.text">Verify internet speeds and
+                        workspace comfort before you book your month-long stay.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Loved by smart travelers</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- T1 -->
-                <div class="bg-slate-50 p-8 rounded-2xl relative">
-                    <div class="text-4xl text-blue-200 absolute top-4 left-6">"</div>
-                    <p class="text-slate-700 relative z-10 mb-6 italic pt-4">I used to spend hours comparing Booking and
-                        TripAdvisor. TripSynapse gave me a summary in 10 seconds that was spot on.</p>
-                    <div class="flex items-center">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-purple rounded-full flex items-center justify-center text-white font-bold">
-                            S</div>
-                        <div class="ml-3">
-                            <div class="font-bold text-slate-900">Sarah Jenkins</div>
-                            <div class="text-xs text-slate-500 uppercase tracking-wide">Frequent Flyer</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- T2 -->
-                <div class="bg-slate-50 p-8 rounded-2xl relative">
-                    <div class="text-4xl text-blue-200 absolute top-4 left-6">"</div>
-                    <p class="text-slate-700 relative z-10 mb-6 italic pt-4">Saved me from booking a place with terrible
-                        Wi-Fi. The AI caught mentions of 'connection issues' that I missed.</p>
-                    <div class="flex items-center">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-purple rounded-full flex items-center justify-center text-white font-bold">
-                            M</div>
-                        <div class="ml-3">
-                            <div class="font-bold text-slate-900">Mark D.</div>
-                            <div class="text-xs text-slate-500 uppercase tracking-wide">Digital Nomad</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- T3 -->
-                <div class="bg-slate-50 p-8 rounded-2xl relative">
-                    <div class="text-4xl text-blue-200 absolute top-4 left-6">"</div>
-                    <p class="text-slate-700 relative z-10 mb-6 italic pt-4">Finally, a tool that tells me if a 'family
-                        friendly' hotel is actually noisy at night. Indispensable.</p>
-                    <div class="flex items-center">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-purple rounded-full flex items-center justify-center text-white font-bold">
-                            E</div>
-                        <div class="ml-3">
-                            <div class="font-bold text-slate-900">Elena R.</div>
-                            <div class="text-xs text-slate-500 uppercase tracking-wide">Family Traveler</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p class="text-center text-slate-400 text-sm mt-8">*Some testimonials on this page may be AI-generated
-                examples for illustration.</p>
         </div>
     </section>
 
     <!-- Pricing -->
-    <section id="pricing" class="py-20 bg-slate-50 border-t border-slate-200">
+    <section id="pricing"
+        class="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Simple, transparent pricing</h2>
-                <p class="text-lg text-slate-600">Start for free, upgrade when you need more power.</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4"
+                    data-key="pricing.title">Simple, transparent pricing</h2>
+                <p class="text-lg text-slate-600 dark:text-slate-400" data-key="pricing.subtitle">Start for free,
+                    upgrade when you need more power.</p>
             </div>
 
-            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 items-start">
                 <!-- Free Plan -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Explorer</h3>
-                    <p class="text-slate-500 mb-6">Perfect for your annual holiday.</p>
-                    <div class="text-4xl font-extrabold text-slate-900 mb-6">$0</div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-green-500 mr-3"></i> 3
-                            Hotel Checks / Month</li>
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-green-500 mr-3"></i>
-                            Basic Summary</li>
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-green-500 mr-3"></i>
-                            Booking.com only</li>
+                <div
+                    class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-all">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-key="pricing.free.title">
+                        Explorer</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm" data-key="pricing.free.desc">Perfect for
+                        your annual holiday.</p>
+                    <div class="text-4xl font-extrabold text-slate-900 dark:text-white mb-6"
+                        data-key="pricing.free.price">€0</div>
+                    <ul class="space-y-4 mb-8 text-sm">
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-green-500 mr-3"></i> <span data-key="pricing.free.f1">3 Hotel
+                                Checks / Month</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-green-500 mr-3"></i> <span data-key="pricing.free.f2">Basic
+                                Summary</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-green-500 mr-3"></i> <span data-key="pricing.free.f3">Google
+                                Maps only</span></li>
                     </ul>
                     <button
-                        class="w-full py-3 rounded-lg font-bold border-2 border-slate-200 text-slate-600 hover:border-brand-blue hover:text-brand-blue transition-colors">Get
-                        Started</button>
+                        class="w-full py-3 rounded-lg font-bold border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-brand-blue dark:hover:border-brand-blue hover:text-brand-blue dark:hover:text-brand-blue transition-colors"
+                        data-key="pricing.ctaFree">Get Started</button>
+                </div>
+
+                <!-- Standard Plan -->
+                <div
+                    class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-md border-2 border-slate-100 dark:border-slate-800 hover:border-brand-purple dark:hover:border-brand-purple transition-all relative">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-key="pricing.std.title">
+                        Standard</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm" data-key="pricing.std.desc">Great for
+                        planning a big trip.</p>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-4xl font-extrabold text-slate-900 dark:text-white"
+                            data-key="pricing.std.price">€5</span>
+                        <span class="text-slate-500 dark:text-slate-400 ml-2" data-key="pricing.month">/month</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-sm">
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-purple mr-3"></i> <span data-key="pricing.std.f1">15
+                                Hotel Checks</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-purple mr-3"></i> <span
+                                data-key="pricing.std.f2">Advanced Summary</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-purple mr-3"></i> <span data-key="pricing.std.f3">Google
+                                Maps only</span></li>
+                    </ul>
+                    <button
+                        class="w-full py-3 rounded-lg font-bold bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-brand-purple hover:text-white transition-colors"
+                        data-key="pricing.ctaStd">Choose Standard</button>
                 </div>
 
                 <!-- Pro Plan -->
-                <div class="bg-white p-8 rounded-2xl shadow-xl border-2 border-brand-blue relative overflow-hidden">
-                    <div
-                        class="absolute top-0 right-0 bg-brand-blue text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                        MOST POPULAR</div>
-                    <h3 class="text-2xl font-bold text-slate-900 mb-2">Jetsetter</h3>
-                    <p class="text-slate-500 mb-6">For frequent travelers and nomads.</p>
+                <div
+                    class="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl border-2 border-brand-blue relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-blue text-white text-xs font-bold px-3 py-1 rounded-bl-lg"
+                        data-key="pricing.pro.badge">MOST POPULAR</div>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-key="pricing.pro.title">
+                        Jetsetter</h3>
+                    <p class="text-slate-500 dark:text-slate-400 mb-6 text-sm" data-key="pricing.pro.desc">For frequent
+                        travelers and nomads.</p>
                     <div class="flex items-baseline mb-6">
-                        <span class="text-4xl font-extrabold text-slate-900">$9</span>
-                        <span class="text-slate-500 ml-2">/month</span>
+                        <span class="text-4xl font-extrabold text-slate-900 dark:text-white"
+                            data-key="pricing.pro.price">€9</span>
+                        <span class="text-slate-500 dark:text-slate-400 ml-2" data-key="pricing.month">/month</span>
                     </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-brand-blue mr-3"></i>
-                            Unlimited Checks</li>
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-brand-blue mr-3"></i>
-                            Deep Analysis (Pros/Cons)</li>
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-brand-blue mr-3"></i>
-                            All Platforms (Airbnb, etc)</li>
-                        <li class="flex items-center text-slate-600"><i class="fas fa-check text-brand-blue mr-3"></i>
-                            Scam Detection Shield</li>
+                    <ul class="space-y-4 mb-8 text-sm">
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-blue mr-3"></i> <span data-key="pricing.pro.f1">Unlimited
+                                Checks</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-blue mr-3"></i> <span data-key="pricing.pro.f2">Deep
+                                Analysis (Pros/Cons)</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-blue mr-3"></i> <span data-key="pricing.pro.f3">All
+                                Platforms (Airbnb, etc)</span></li>
+                        <li class="flex items-center text-slate-600 dark:text-slate-300"><i
+                                class="fas fa-check text-brand-blue mr-3"></i> <span data-key="pricing.pro.f4">Scam
+                                Detection Shield</span></li>
                     </ul>
                     <button
-                        class="w-full py-3 rounded-lg font-bold bg-brand-blue text-white hover:bg-blue-800 transition-colors">Start
-                        Free Trial</button>
+                        class="w-full py-3 rounded-lg font-bold bg-brand-blue text-white hover:bg-blue-800 transition-colors"
+                        data-key="pricing.ctaPro">Start Free Trial</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="py-20 bg-white">
+    <section id="faq" class="py-20 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Frequently Asked Questions</h2>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4"
+                    data-key="faq.title">Frequently Asked Questions</h2>
             </div>
 
             <div class="space-y-2" id="accordion-container">
-                <!-- Items are handled by JS to mimic the accordion effect -->
-                <div class="border-b border-slate-200">
+                <div class="border-b border-slate-200 dark:border-slate-800">
                     <button
                         class="accordion-btn w-full py-5 flex justify-between items-center text-left focus:outline-none">
-                        <span class="text-lg font-medium text-slate-900 pr-8">How is this different from
-                            TripAdvisor?</span>
+                        <span class="text-lg font-medium text-slate-900 dark:text-white pr-8" data-key="faq.q1">How is
+                            this different from TripAdvisor?</span>
                         <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
                     </button>
                     <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="text-slate-600 leading-relaxed pb-5">Booking sites want you to book. We want you to
-                            know the truth. We analyze reviews from all those sites to give you an unbiased summary, not
-                            a sales pitch.</p>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed pb-5" data-key="faq.a1">Booking
+                            sites want you to book. We want you to know the truth. We analyze reviews from all those
+                            sites to give you an unbiased summary, not a sales pitch.</p>
                     </div>
                 </div>
-
-                <div class="border-b border-slate-200">
+                <div class="border-b border-slate-200 dark:border-slate-800">
                     <button
                         class="accordion-btn w-full py-5 flex justify-between items-center text-left focus:outline-none">
-                        <span class="text-lg font-medium text-slate-900 pr-8">Do you change or fabricate reviews?</span>
+                        <span class="text-lg font-medium text-slate-900 dark:text-white pr-8" data-key="faq.q2">Do you
+                            change or fabricate reviews?</span>
                         <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
                     </button>
                     <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="text-slate-600 leading-relaxed pb-5">Never. Our AI reads existing real user reviews
-                            and summarizes the consensus. We do not generate fake feedback.</p>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed pb-5" data-key="faq.a2">Never. Our
+                            AI reads existing real user reviews and summarizes the consensus. We do not generate fake
+                            feedback.</p>
                     </div>
                 </div>
-
-                <div class="border-b border-slate-200">
+                <div class="border-b border-slate-200 dark:border-slate-800">
                     <button
                         class="accordion-btn w-full py-5 flex justify-between items-center text-left focus:outline-none">
-                        <span class="text-lg font-medium text-slate-900 pr-8">Is my search history private?</span>
+                        <span class="text-lg font-medium text-slate-900 dark:text-white pr-8" data-key="faq.q3">Is my
+                            search history private?</span>
                         <i class="fas fa-chevron-down text-slate-400 transition-transform"></i>
                     </button>
                     <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="text-slate-600 leading-relaxed pb-5">Absolutely. We do not sell your search data to
-                            hotels or advertisers. Your travel plans are your business.</p>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed pb-5" data-key="faq.a3">Absolutely.
+                            We do not sell your search data to hotels or advertisers. Your travel plans are your
+                            business.</p>
                     </div>
                 </div>
             </div>
@@ -631,99 +637,106 @@
                     <div class="flex items-center space-x-2 mb-4">
                         <img src="logo.jpg"
                             onerror="this.src='https://placehold.co/100x100?text=Logo';this.style.borderRadius='10px'"
-                            alt="Logo" class="h-8 w-auto opacity-90">
+                            alt="Logo" class="h-8 w-auto opacity-90 brand-logo transition-opacity duration-300">
                         <span class="text-xl font-bold text-white">TripSynapse</span>
                     </div>
-                    <p class="text-sm">Think Smart. Travel Smart.</p>
+                    <p class="text-sm" data-key="footer.tagline">Think Smart. Travel Smart.</p>
+
+                    <!-- Social Media Links -->
+                    <div class="mt-6">
+                        <p class="text-xs uppercase font-bold text-slate-500 mb-3" data-key="footer.follow">Follow or
+                            talk with us on :</p>
+                        <div class="flex space-x-4">
+                            <a href="https://www.instagram.com/tripsynapse/" target="_blank" rel="noopener noreferrer"
+                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#"
+                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#"
+                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Product</h4>
+                    <h4 class="text-white font-bold mb-4" data-key="footer.product">Product</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-white transition-colors">How it Works</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Chrome Extension</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="nav.howItWorks">How it
+                                Works</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="nav.pricing">Pricing</a>
+                        </li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="footer.chrome">Chrome
+                                Extension</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <h4 class="text-white font-bold mb-4" data-key="footer.company">Company</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="footer.about">About</a>
+                        </li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="footer.blog">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="footer.contact">Contact</a>
+                        </li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <h4 class="text-white font-bold mb-4" data-key="footer.legal">Legal</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="footer.privacy">Privacy
+                                Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors" data-key="footer.terms">Terms of
+                                Service</a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-slate-800 pt-8 text-sm text-center md:text-left">
-                &copy; <span id="year"></span> TripSynapse. All rights reserved.
+                &copy; <span id="year"></span> TripSynapse. <span data-key="footer.rights">All rights reserved.</span>
             </div>
         </div>
     </footer>
 
     <script>
-        // Set Current Year
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Navbar Scroll Effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) {
-                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'py-3');
+                // Adjust navbar background for dark mode compatibility
+                navbar.classList.add('bg-white/95', 'dark:bg-slate-900/95', 'backdrop-blur-md', 'shadow-sm', 'py-3');
                 navbar.classList.remove('bg-transparent', 'py-5');
             } else {
-                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'py-3');
+                navbar.classList.remove('bg-white/95', 'dark:bg-slate-900/95', 'backdrop-blur-md', 'shadow-sm', 'py-3');
                 navbar.classList.add('bg-transparent', 'py-5');
             }
         });
 
-        // Mobile Menu Toggle
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
-        const icon = btn.querySelector('i');
         const mobileLinks = document.querySelectorAll('.mobile-link');
 
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
-            if (menu.classList.contains('hidden')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            }
         });
 
-        // Close mobile menu on link click
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 menu.classList.add('hidden');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
             });
         });
 
-        // FAQ Accordion Logic
         const accordions = document.querySelectorAll('.accordion-btn');
-
         accordions.forEach(acc => {
             acc.addEventListener('click', function () {
-                // Close other open accordions (optional, keeps it clean)
                 const currentContent = this.nextElementSibling;
                 const isOpened = currentContent.style.maxHeight;
-
-                // Reset all icons and close all
                 accordions.forEach(otherAcc => {
                     otherAcc.nextElementSibling.style.maxHeight = null;
                     otherAcc.querySelector('i').classList.remove('rotate-180');
                 });
-
-                // If it wasn't opened, open it now
                 if (!isOpened) {
                     currentContent.style.maxHeight = currentContent.scrollHeight + "px";
                     this.querySelector('i').classList.add('rotate-180');
@@ -731,35 +744,409 @@
             });
         });
 
-        // --- NEW: Countdown Timer Logic ---
         function updateCountdown() {
-            // Target Date: December 10, 2025
             const launchDate = new Date("December 10, 2025 00:00:00").getTime();
             const now = new Date().getTime();
             const distance = launchDate - now;
 
             if (distance < 0) {
-                // If date is passed
                 document.getElementById("countdown-container").innerHTML = "<div class='text-2xl font-bold'>We have launched!</div>";
                 return;
             }
 
-            // Calculations
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Update DOM with zero padding
             document.getElementById("days").innerText = days < 10 ? "0" + days : days;
             document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
             document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }
-
-        // Run immediately and then every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
+
+        // --- HOTEL MOCKUP LOGIC ---
+        const hotels = [
+            {
+                name: "Grand Hotel Continental",
+                location: { en: "Bucharest, Romania", ro: "București, România" },
+                score: "8.7",
+                scoreClass: "bg-emerald-600",
+                summary: {
+                    en: "Historic luxury in the city center. Guests love the architecture and breakfast. Some mention expensive parking.",
+                    ro: "Lux istoric în centrul orașului. Oaspeții adoră arhitectura și micul dejun. Unii menționează parcarea scumpă."
+                },
+                pros: {
+                    en: ["Central Location", "Historic Building"],
+                    ro: ["Locație Centrală", "Clădire Istorică"]
+                },
+                cons: {
+                    en: ["Expensive Parking", "Small Gym"],
+                    ro: ["Parcare Scumpă", "Sală Mică"]
+                }
+            },
+            {
+                name: "Seaside View Hotel",
+                location: { en: "Constanța, Romania", ro: "Constanța, România" },
+                score: "6.5",
+                scoreClass: "bg-orange-500",
+                summary: {
+                    en: "Great proximity to the beach, but the furniture is outdated. Thin walls make it noisy at night.",
+                    ro: "Proximitate excelentă față de plajă, dar mobilierul este învechit. Pereții subțiri îl fac zgomotos noaptea."
+                },
+                pros: {
+                    en: ["Near Beach", "Cheap"],
+                    ro: ["Lângă Plajă", "Ieftin"]
+                },
+                cons: {
+                    en: ["Old Rooms", "Noisy"],
+                    ro: ["Camere Vechi", "Zgomotos"]
+                }
+            },
+            {
+                name: "City Center Hostel",
+                location: { en: "Cluj-Napoca, Romania", ro: "Cluj-Napoca, România" },
+                score: "3.8",
+                scoreClass: "bg-red-600",
+                summary: {
+                    en: "Avoid this place. Reports of bed bugs and very rude staff. Hygiene is unacceptable.",
+                    ro: "Evitați acest loc. Rapoarte despre ploșnițe și personal foarte nepoliticos. Igiena este inacceptabilă."
+                },
+                pros: {
+                    en: ["Very Cheap", "Central"],
+                    ro: ["Foarte Ieftin", "Central"]
+                },
+                cons: {
+                    en: ["Dirty", "Rude Staff"],
+                    ro: ["Murdar", "Personal Nepoliticos"]
+                }
+            }
+        ];
+
+        let currentHotelIndex = 0;
+        let currentLang = 'en';
+
+        function updateHotelDisplay() {
+            const hotel = hotels[currentHotelIndex];
+            const nameEl = document.getElementById('hotel-name');
+            const locationEl = document.getElementById('hotel-location');
+            const scoreBox = document.getElementById('score-box');
+            const scoreEl = document.getElementById('hotel-score');
+            const summaryEl = document.getElementById('hotel-summary');
+            const pro1 = document.getElementById('hotel-pro1');
+            const pro2 = document.getElementById('hotel-pro2');
+            const con1 = document.getElementById('hotel-con1');
+            const con2 = document.getElementById('hotel-con2');
+            const dots = document.getElementById('hotel-dots').children;
+
+            nameEl.style.opacity = 0;
+            locationEl.style.opacity = 0;
+            summaryEl.style.opacity = 0;
+            pro1.parentElement.parentElement.style.opacity = 0;
+            con1.parentElement.parentElement.style.opacity = 0;
+
+            setTimeout(() => {
+                nameEl.textContent = hotel.name;
+                locationEl.textContent = hotel.location[currentLang];
+                scoreEl.textContent = hotel.score;
+                scoreBox.className = `${hotel.scoreClass} text-white px-4 py-2 rounded-lg text-center shadow-lg transition-colors duration-500`;
+                summaryEl.textContent = hotel.summary[currentLang];
+                pro1.textContent = hotel.pros[currentLang][0];
+                pro2.textContent = hotel.pros[currentLang][1];
+                con1.textContent = hotel.cons[currentLang][0];
+                con2.textContent = hotel.cons[currentLang][1];
+
+                for (let i = 0; i < 3; i++) {
+                    dots[i].className = i === currentHotelIndex
+                        ? "w-2 h-2 rounded-full bg-slate-800 dark:bg-white transition-colors"
+                        : "w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors";
+                }
+
+                nameEl.style.opacity = 1;
+                locationEl.style.opacity = 1;
+                summaryEl.style.opacity = 1;
+                pro1.parentElement.parentElement.style.opacity = 1;
+                con1.parentElement.parentElement.style.opacity = 1;
+            }, 300);
+        }
+
+        setInterval(() => {
+            currentHotelIndex = (currentHotelIndex + 1) % hotels.length;
+            updateHotelDisplay();
+        }, 5000);
+
+        // --- THEME LOGIC ---
+        function toggleTheme() {
+            // Toggle 'dark' class on <html>
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+            updateLogo();
+        }
+
+        function updateLogo() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const logos = document.querySelectorAll('.brand-logo');
+            logos.forEach(img => {
+                // Assumes you have a file named 'logo-dark.jpg' for dark mode
+                img.src = isDark ? 'logo-dark.jpg' : 'logo.jpg';
+            });
+        }
+
+        // Initialize Theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        updateLogo(); // Set initial logo
+
+        // --- Multi-Language Logic ---
+        const translations = {
+            en: {
+                "nav.howItWorks": "How it Works",
+                "nav.whyUs": "Why Us",
+                "nav.useCases": "Use Cases",
+                "nav.pricing": "Pricing",
+                "nav.faq": "FAQ",
+                "nav.cta": "Join the waitlist",
+                "hero.new": "New: Google Maps Integration",
+                "hero.title": "Stop reading <br/> <span class='text-gradient'>300+ reviews.</span><br/> Get one smart answer.",
+                "hero.subtitle": "TripSynapse's AI reads reviews from every platform to give you a clear summary, a trusted score, and the honest truth about your hotel.",
+                "hero.ctaPrimary": "Join the waitlist",
+                "hero.ctaSecondary": "See how it works",
+                "hero.note": "No credit card required • Works with all major sites",
+                "mockup.scoreLabel": "Trust Score",
+                "mockup.aiSummaryLabel": "AI Summary",
+                "mockup.prosLabel": "Pros",
+                "mockup.consLabel": "Cons",
+                "countdown.title": "Official Launching In",
+                "countdown.days": "Days",
+                "countdown.hours": "Hours",
+                "countdown.mins": "Mins",
+                "countdown.secs": "Secs",
+                "countdown.date": "10 December 2025 • Mark your calendars",
+                "problem.title": "Review Fatigue is Real",
+                "problem.subtitle": "Booking a hotel shouldn't feel like a research project. Why is it so hard to get a straight answer?",
+                "problem.card1.title": "Overwhelming Volume",
+                "problem.card1.text": "Who has time to read 300+ reviews across 4 different sites just to book one night?",
+                "problem.card2.title": "Hard to Trust",
+                "problem.card2.text": "Fake reviews, paid bots, and biased rants make it impossible to know the truth.",
+                "problem.card3.title": "Time Wasted",
+                "problem.card3.text": "Average travelers spend 5+ hours researching hotels. Get your weekend back.",
+                "works.title": "How TripSynapse works",
+                "works.subtitle": "Three simple steps to smarter travel decisions.",
+                "works.step1.title": "Paste or Search",
+                "works.step1.text": "Simply paste a hotel link or search your destination directly on our platform.",
+                "works.step2.title": "AI Analysis",
+                "works.step2.text": "Our engine currently reads thousands of reviews from Google Maps in seconds, and we are currently working on integrating it with Booking, Airbnb, and Expedia.",
+                "works.step3.title": "Get Answers",
+                "works.step3.text": "Receive a single, unbiased summary with a clear Trust Score and honest pros & cons.",
+                "trust.title": "Why Trust TripSynapse?",
+                "trust.subtitle": "We are building the most objective travel tool on the web.",
+                "trust.card1.title": "Multi-Platform",
+                "trust.card1.text": "We aggregate data from every major booking site to give you the full picture.",
+                "trust.card2.title": "Scam Detection",
+                "trust.card2.text": "Our algorithms flag suspicious patterns and exclude likely fake reviews.",
+                "trust.card3.title": "No Paid Rank",
+                "trust.card3.text": "Hotels cannot pay to improve their score. We work only for you, the traveler.",
+                "trust.card4.title": "Objective Stats",
+                "trust.card4.text": "We don't sugarcoat. If the Wi-Fi is slow or the pool is dirty, we'll tell you.",
+                "usecase.case1.title": "For Business",
+                "usecase.case1.text": "Find quiet rooms with reliable Wi-Fi instantly. No surprises during your big presentation trip.",
+                "usecase.case2.title": "For Holidays",
+                "usecase.case2.text": "Ensure the 'ocean view' isn't actually a 'parking lot view'. Make every vacation day count.",
+                "usecase.case3.title": "Digital Nomads",
+                "usecase.case3.text": "Verify internet speeds and workspace comfort before you book your month-long stay.",
+                "testimonials.title": "Loved by smart travelers",
+                "testimonials.t1.text": "I used to spend hours comparing Booking and TripAdvisor. TripSynapse gave me a summary in 10 seconds that was spot on.",
+                "testimonials.t1.role": "Frequent Flyer",
+                "testimonials.t2.text": "Saved me from booking a place with terrible Wi-Fi. The AI caught mentions of 'connection issues' that I missed.",
+                "testimonials.t2.role": "Digital Nomad",
+                "testimonials.t3.text": "Finally, a tool that tells me if a 'family friendly' hotel is actually noisy at night. Indispensable.",
+                "testimonials.t3.role": "Family Traveler",
+                "testimonials.disclaimer": "*Some testimonials on this page may be AI-generated examples for illustration.",
+                "pricing.title": "Simple, transparent pricing",
+                "pricing.subtitle": "Start for free, upgrade when you need more power.",
+                "pricing.free.title": "Explorer",
+                "pricing.free.desc": "Perfect for your annual holiday.",
+                "pricing.free.price": "€0",
+                "pricing.free.f1": "3 Hotel Checks / Month",
+                "pricing.free.f2": "Basic Summary",
+                "pricing.free.f3": "Google Maps only",
+                "pricing.ctaFree": "Get Started",
+                "pricing.std.title": "Standard",
+                "pricing.std.desc": "Great for planning a big trip.",
+                "pricing.std.price": "€5",
+                "pricing.std.f1": "15 Hotel Checks",
+                "pricing.std.f2": "Advanced Summary",
+                "pricing.std.f3": "Google Maps only",
+                "pricing.ctaStd": "Choose Standard",
+                "pricing.pro.badge": "MOST POPULAR",
+                "pricing.pro.title": "Jetsetter",
+                "pricing.pro.desc": "For frequent travelers and nomads.",
+                "pricing.pro.price": "€9",
+                "pricing.month": "/month",
+                "pricing.pro.f1": "Unlimited Checks",
+                "pricing.pro.f2": "Deep Analysis (Pros/Cons)",
+                "pricing.pro.f3": "All Platforms (Airbnb, etc)",
+                "pricing.pro.f4": "Scam Detection Shield",
+                "pricing.ctaPro": "Start Free Trial",
+                "faq.title": "Frequently Asked Questions",
+                "faq.q1": "How is this different from TripAdvisor?",
+                "faq.a1": "Booking sites want you to book. We want you to know the truth. We analyze reviews from all those sites to give you an unbiased summary, not a sales pitch.",
+                "faq.q2": "Do you change or fabricate reviews?",
+                "faq.a2": "Never. Our AI reads existing real user reviews and summarizes the consensus. We do not generate fake feedback.",
+                "faq.q3": "Is my search history private?",
+                "faq.a3": "Absolutely. We do not sell your search data to hotels or advertisers. Your travel plans are your business.",
+                "footer.tagline": "Think Smart. Travel Smart.",
+                "footer.follow": "Follow or talk with us on :",
+                "footer.product": "Product",
+                "footer.chrome": "Chrome Extension",
+                "footer.company": "Company",
+                "footer.about": "About",
+                "footer.blog": "Blog",
+                "footer.contact": "Contact",
+                "footer.legal": "Legal",
+                "footer.privacy": "Privacy Policy",
+                "footer.terms": "Terms of Service",
+                "footer.rights": "All rights reserved."
+            },
+            ro: {
+                "nav.howItWorks": "Cum funcționează",
+                "nav.whyUs": "De ce noi",
+                "nav.useCases": "Utilizări",
+                "nav.pricing": "Prețuri",
+                "nav.faq": "Întrebări frecvente",
+                "nav.cta": "Intră pe lista de așteptare",
+                "hero.new": "Nou: Integrare Google Maps",
+                "hero.title": "Nu mai citi <br/> <span class='text-gradient'>300+ recenzii.</span><br/> Obține un răspuns inteligent.",
+                "hero.subtitle": "AI-ul TripSynapse analizează recenziile de pe toate platformele și îți oferă un rezumat clar, un scor de încredere și adevărul despre hotelul ales.",
+                "hero.ctaPrimary": "Intră pe lista de așteptare",
+                "hero.ctaSecondary": "Vezi cum funcționează",
+                "hero.note": "Fără card de credit • Funcționează cu site-urile majore",
+                "mockup.scoreLabel": "Scor de Încredere",
+                "mockup.aiSummaryLabel": "Rezumat AI",
+                "mockup.prosLabel": "Pro",
+                "mockup.consLabel": "Contra",
+                "countdown.title": "Lansare Oficială În",
+                "countdown.days": "Zile",
+                "countdown.hours": "Ore",
+                "countdown.mins": "Min",
+                "countdown.secs": "Sec",
+                "countdown.date": "10 Decembrie 2025 • Notează în calendar",
+                "problem.title": "Oboseala cauzată de recenzii e reală",
+                "problem.subtitle": "Rezervarea unui hotel nu ar trebui să fie un proiect de cercetare. De ce e atât de greu să primești un răspuns clar?",
+                "problem.card1.title": "Volum Copleșitor",
+                "problem.card1.text": "Cine are timp să citească 300+ recenzii pe 4 site-uri diferite doar pentru o noapte?",
+                "problem.card2.title": "Dificil de crezut",
+                "problem.card2.text": "Recenzii false, boți plătiți și opinii părtinitoare fac imposibilă aflarea adevărului.",
+                "problem.card3.title": "Timp Pierdut",
+                "problem.card3.text": "Călătorii petrec în medie 5+ ore cercetând hoteluri. Recâștigă-ți weekendul.",
+                "works.title": "Cum funcționează TripSynapse",
+                "works.subtitle": "Trei pași simpli pentru decizii de călătorie mai inteligente.",
+                "works.step1.title": "Lipește Link-ul sau Caută",
+                "works.step1.text": "Pur și simplu lipește un link de hotel sau caută destinația direct pe platforma noastră.",
+                "works.step2.title": "Analiză AI",
+                "works.step2.text": "Motorul nostru citește în prezent mii de recenzii de pe Google Maps în câteva secunde și lucrăm la integrarea cu Booking, Airbnb și Expedia.",
+                "works.step3.title": "Obține Rezultatul",
+                "works.step3.text": "Primește un rezumat unic, imparțial, cu un Scor de Încredere clar și pro & contra oneste.",
+                "trust.title": "De ce să alegi TripSynapse?",
+                "trust.subtitle": "Construim cel mai obiectiv instrument de călătorie de pe web.",
+                "trust.card1.title": "Multi-Platformă",
+                "trust.card1.text": "Agregăm date de pe toate site-urile majore de rezervări pentru a-ți oferi imaginea completă.",
+                "trust.card2.title": "Detectare Recenzii False",
+                "trust.card2.text": "Algoritmii noștri semnalează modele suspecte și exclud recenziile probabil false.",
+                "trust.card3.title": "Fără Promovare Plătită",
+                "trust.card3.text": "Hotelurile nu pot plăti pentru a-și îmbunătăți scorul. Lucrăm doar pentru tine, călătorul.",
+                "trust.card4.title": "Analiză Obiectivă",
+                "trust.card4.text": "Nu îndulcim situația. Dacă Wi-Fi-ul e lent sau piscina e murdară, îți vom spune.",
+                "usecase.case1.title": "Călătorii de Afaceri",
+                "usecase.case1.text": "Găsește camere liniștite cu Wi-Fi fiabil instantaneu. Fără surprize în timpul călătoriei importante.",
+                "usecase.case2.title": "Vacanțe și Relaxare",
+                "usecase.case2.text": "Asigură-te că 'vederea la ocean' nu e de fapt 'vedere la parcare'. Fă fiecare zi să conteze.",
+                "usecase.case3.title": "Nomazi Digitali",
+                "usecase.case3.text": "Verifică viteza internetului și confortul spațiului de lucru înainte de a rezerva luna.",
+                "testimonials.title": "Apreciat de călătorii inteligenți",
+                "testimonials.t1.text": "Obișnuiam să pierd ore comparând Booking și TripAdvisor. TripSynapse mi-a dat un rezumat în 10 secunde care a fost perfect.",
+                "testimonials.t1.role": "Călător Frecvent",
+                "testimonials.t2.text": "M-a scăpat de rezervarea unui loc cu Wi-Fi groaznic. AI-ul a prins mențiuni despre 'probleme de conexiune' pe care le-am ratat.",
+                "testimonials.t2.role": "Nomad Digital",
+                "testimonials.t3.text": "În sfârșit, un instrument care îmi spune dacă un hotel 'family friendly' e de fapt zgomotos noaptea. Indispensabil.",
+                "testimonials.t3.role": "Călător de Familie",
+                "testimonials.disclaimer": "*Unele mărturii de pe această pagină pot fi exemple generate de AI.",
+                "pricing.title": "Prețuri simple, transparente",
+                "pricing.subtitle": "Începe gratuit, fă upgrade când ai nevoie de mai multă putere.",
+                "pricing.free.title": "Explorator",
+                "pricing.free.desc": "Perfect pentru vacanța ta anuală.",
+                "pricing.free.price": "0 RON",
+                "pricing.free.f1": "3 Verificări / Lună",
+                "pricing.free.f2": "Rezumat De Bază",
+                "pricing.free.f3": "Doar Google Maps",
+                "pricing.ctaFree": "Începe Acum",
+                "pricing.std.title": "Standard",
+                "pricing.std.desc": "Excelent pentru planificarea unei călătorii mari.",
+                "pricing.std.price": "25 RON",
+                "pricing.std.f1": "15 Verificări Hotel",
+                "pricing.std.f2": "Rezumat Avansat",
+                "pricing.std.f3": "Doar Google Maps",
+                "pricing.ctaStd": "Alege Standard",
+                "pricing.pro.badge": "CEL MAI POPULAR",
+                "pricing.pro.title": "Jetsetter",
+                "pricing.pro.desc": "Pentru călători frecvenți și nomazi.",
+                "pricing.pro.price": "45 RON",
+                "pricing.month": "/lună",
+                "pricing.pro.f1": "Verificări Nelimitate",
+                "pricing.pro.f2": "Analiză Profundă (Pro/Contra)",
+                "pricing.pro.f3": "Toate Platformele (Airbnb, etc)",
+                "pricing.pro.f4": "Protecție Anti-Fraudă",
+                "pricing.ctaPro": "Start Încercare Gratuită",
+                "faq.title": "Întrebări Frecvente",
+                "faq.q1": "Cu ce sunteți diferiți de TripAdvisor?",
+                "faq.a1": "Site-urile de rezervări vor să rezervi. Noi vrem să știi adevărul. Analizăm recenziile pentru a-ți oferi un rezumat imparțial, nu o vânzare.",
+                "faq.q2": "Modificați sau inventați recenzii?",
+                "faq.a2": "Niciodată. AI-ul nostru citește recenziile reale existente și rezumă consensul. Nu generăm feedback fals.",
+                "faq.q3": "Istoricul căutărilor este privat?",
+                "faq.a3": "Absolut. Nu vindem datele tale hotelurilor sau agențiilor. Planurile tale de călătorie sunt treaba ta.",
+                "footer.tagline": "Gândește Inteligent. Călătorește Inteligent.",
+                "footer.follow": "Urmărește-ne sau vorbește cu noi pe :",
+                "footer.product": "Produs",
+                "footer.chrome": "Extensie Chrome",
+                "footer.company": "Companie",
+                "footer.about": "Despre",
+                "footer.blog": "Blog",
+                "footer.contact": "Contact",
+                "footer.legal": "Legal",
+                "footer.privacy": "Politică de Confidențialitate",
+                "footer.terms": "Termeni și Condiții",
+                "footer.rights": "Toate drepturile rezervate."
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ro' : 'en';
+
+            const code = currentLang === 'en' ? 'EN' : 'RO';
+
+            document.getElementById('lang-code-desktop').innerText = code;
+            document.getElementById('lang-code-mobile-header').innerText = code;
+
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            updateHotelDisplay();
+        }
     </script>
 </body>
 
