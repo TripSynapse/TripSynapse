@@ -243,6 +243,32 @@
         </div>
     </header>
 
+    <!-- NEW: Launch Countdown Section -->
+    <section class="py-12 bg-gradient-brand text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-8">Official Launching In</h2>
+            <div class="flex justify-center gap-4 md:gap-8 text-center" id="countdown-container">
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
+                    <div id="days" class="text-3xl md:text-4xl font-bold">00</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Days</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
+                    <div id="hours" class="text-3xl md:text-4xl font-bold">00</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Hours</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
+                    <div id="minutes" class="text-3xl md:text-4xl font-bold">00</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Mins</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 border border-white/20">
+                    <div id="seconds" class="text-3xl md:text-4xl font-bold">00</div>
+                    <div class="text-xs uppercase tracking-wider mt-1 opacity-80">Secs</div>
+                </div>
+            </div>
+            <p class="mt-8 text-blue-100 text-sm font-medium">10 December 2025 • Mark your calendars</p>
+        </div>
+    </section>
+
     <!-- The Problem Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -704,6 +730,36 @@
                 }
             });
         });
+
+        // --- NEW: Countdown Timer Logic ---
+        function updateCountdown() {
+            // Target Date: December 10, 2025
+            const launchDate = new Date("December 10, 2025 00:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            if (distance < 0) {
+                // If date is passed
+                document.getElementById("countdown-container").innerHTML = "<div class='text-2xl font-bold'>We have launched!</div>";
+                return;
+            }
+
+            // Calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update DOM with zero padding
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        // Run immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 
