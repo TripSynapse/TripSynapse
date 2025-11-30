@@ -206,9 +206,10 @@
                             class="bg-gradient-brand hover:opacity-90 text-white px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-lg shadow-brand-blue/30 flex items-center justify-center gap-2">
                             <span data-key="hero.ctaPrimary">Join the waitlist</span> <i class="fas fa-arrow-right"></i>
                         </button>
-                        <button
+                        <button onclick="openVideoModal()"
                             class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-full text-lg font-bold transition-all hover:shadow-md">
-                            <span data-key="hero.ctaSecondary">See how it works</span>
+                            <span data-key="hero.ctaSecondary">See how it works</span> <i
+                                class="fas fa-play ml-2 text-xs"></i>
                         </button>
                     </div>
                     <p class="mt-4 text-sm text-slate-500 dark:text-slate-400" data-key="hero.note">No credit card
@@ -665,8 +666,9 @@
                 <div>
                     <h4 class="text-white font-bold mb-4" data-key="footer.product">Product</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-white transition-colors" data-key="nav.howItWorks">How it
-                                Works</a></li>
+                        <!-- Updated Footer Link to open Modal -->
+                        <li><button onclick="openVideoModal()" class="hover:text-white transition-colors text-left"
+                                data-key="nav.howItWorks">How it Works</button></li>
                         <li><a href="#" class="hover:text-white transition-colors" data-key="nav.pricing">Pricing</a>
                         </li>
                         <li><a href="#" class="hover:text-white transition-colors" data-key="footer.chrome">Chrome
@@ -699,13 +701,51 @@
         </div>
     </footer>
 
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity opacity-0 fade-in-backdrop"
+            onclick="closeVideoModal()"></div>
+
+        <div class="relative z-10 w-full h-full flex items-center justify-center p-4">
+            <div
+                class="relative bg-black rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl aspect-video transform transition-all scale-95 opacity-0 fade-in-modal border border-slate-700">
+
+                <!-- Close Button -->
+                <button onclick="closeVideoModal()"
+                    class="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-slate-800 text-white rounded-full transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+
+                <!-- Video Player -->
+                <video id="main-video" class="w-full h-full object-cover" controls>
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Animation Utilities */
+        #video-modal.flex .fade-in-backdrop {
+            opacity: 1;
+        }
+
+        #video-modal.flex .fade-in-modal {
+            opacity: 1;
+            transform: scale(100%);
+        }
+    </style>
+
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        // ... (Existing Navbar Logic) ...
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 20) {
-                // Adjust navbar background for dark mode compatibility
                 navbar.classList.add('bg-white/95', 'dark:bg-slate-900/95', 'backdrop-blur-md', 'shadow-sm', 'py-3');
                 navbar.classList.remove('bg-transparent', 'py-5');
             } else {
@@ -714,6 +754,7 @@
             }
         });
 
+        // ... (Existing Mobile Menu Logic) ...
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -728,6 +769,7 @@
             });
         });
 
+        // ... (Existing FAQ Logic) ...
         const accordions = document.querySelectorAll('.accordion-btn');
         accordions.forEach(acc => {
             acc.addEventListener('click', function () {
@@ -744,6 +786,7 @@
             });
         });
 
+        // ... (Existing Countdown Logic) ...
         function updateCountdown() {
             const launchDate = new Date("December 10, 2025 00:00:00").getTime();
             const now = new Date().getTime();
@@ -767,7 +810,7 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // --- HOTEL MOCKUP LOGIC ---
+        // ... (Existing Hotel Mockup Logic) ...
         const hotels = [
             {
                 name: "Grand Hotel Continental",
@@ -877,9 +920,45 @@
             updateHotelDisplay();
         }, 5000);
 
+        // --- NEW: Video Modal Logic ---
+        function openVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const video = document.getElementById('main-video');
+
+            // Set source based on current language
+            // MAKE SURE YOU HAVE THESE FILES: video_en.mp4 and video_ro.mp4
+            const videoSource = currentLang === 'ro' ? 'video_ro.mp4' : 'video_en.mp4';
+
+            // Only update src if it changed to prevent unnecessary reloading
+            if (!video.src.includes(videoSource)) {
+                video.src = videoSource;
+            }
+
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before adding opacity class for animation
+            setTimeout(() => {
+                modal.classList.add('flex'); // Add flex to center content
+            }, 10);
+
+            // Play automatically
+            video.play().catch(e => console.log("Auto-play prevented"));
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const video = document.getElementById('main-video');
+
+            modal.classList.remove('flex');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Wait for transition
+
+            video.pause();
+            video.currentTime = 0;
+        }
+
         // --- THEME LOGIC ---
         function toggleTheme() {
-            // Toggle 'dark' class on <html>
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
                 localStorage.theme = 'light';
@@ -894,23 +973,22 @@
             const isDark = document.documentElement.classList.contains('dark');
             const logos = document.querySelectorAll('.brand-logo');
             logos.forEach(img => {
-                // Assumes you have a file named 'logo-dark.jpg' for dark mode
                 img.src = isDark ? 'logo-dark.jpg' : 'logo.jpg';
             });
         }
 
-        // Initialize Theme
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-        updateLogo(); // Set initial logo
+        updateLogo();
 
         // --- Multi-Language Logic ---
         const translations = {
             en: {
                 "nav.howItWorks": "How it Works",
+                // ... (rest of translations remain same) ...
                 "nav.whyUs": "Why Us",
                 "nav.useCases": "Use Cases",
                 "nav.pricing": "Pricing",
