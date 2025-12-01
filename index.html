@@ -1240,8 +1240,11 @@
 
             const code = currentLang === 'en' ? 'EN' : 'RO';
 
-            document.getElementById('lang-code').innerText = code;
-            document.getElementById('lang-code-mobile').innerText = code;
+            const desktopCode = document.getElementById('lang-code-desktop');
+            if (desktopCode) desktopCode.innerText = code;
+
+            const mobileCode = document.getElementById('lang-code-mobile-header');
+            if (mobileCode) mobileCode.innerText = code;
 
             const elements = document.querySelectorAll('[data-key]');
             elements.forEach(el => {
