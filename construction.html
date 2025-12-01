@@ -7,6 +7,13 @@
     <title>TripSynapse - Coming Soon</title>
     <!-- Favicon -->
     <link rel="icon" href="logo.jpg" type="image/jpeg">
+    <!-- Open Graph / Social Media Meta Tags (Fix for WhatsApp Preview) -->
+    <meta property="og:title" content="TripSynapse - Coming Soon">
+    <meta property="og:description" content="We are building something amazing. Stay tuned for TripSynapse!">
+    <meta property="og:image" content="https://tripsynapse.github.io/TripSynapse/logo.jpg">
+    <meta property="og:url" content="https://tripsynapse.github.io/TripSynapse/construction.html">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -248,18 +255,18 @@
                 }
             });
 
-            // Update links to keep language
-            document.querySelectorAll('.construction-link').forEach(link => {
-                const base = link.getAttribute('href').split('?')[0];
-                link.href = `${base}?lang=${currentLang}`;
-            });
-
             // Refresh the current funny message in the correct language
             // (Only if content is already loaded, otherwise loadFunnyContent will handle it)
             const container = document.getElementById('funny-content');
             if (container.children.length > 0) {
                 renderFunnyContent(currentMessageIndex);
             }
+
+            // Update links to keep language
+            document.querySelectorAll('.construction-link').forEach(link => {
+                const base = link.getAttribute('href').split('?')[0];
+                link.href = `${base}?lang=${currentLang}`;
+            });
         }
 
         function toggleLanguage() {
