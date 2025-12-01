@@ -277,12 +277,10 @@
                                         <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                                             <li class="flex items-start"><i
                                                     class="fas fa-check text-green-600 dark:text-green-400 mr-1.5 mt-0.5"></i>
-                                                <span id="hotel-pro1">Central Location</span>
-                                            </li>
+                                                <span id="hotel-pro1">Central Location</span></li>
                                             <li class="flex items-start"><i
                                                     class="fas fa-check text-green-600 dark:text-green-400 mr-1.5 mt-0.5"></i>
-                                                <span id="hotel-pro2">Historic Building</span>
-                                            </li>
+                                                <span id="hotel-pro2">Historic Building</span></li>
                                         </ul>
                                     </div>
                                     <div
@@ -292,12 +290,10 @@
                                         <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                                             <li class="flex items-start"><i
                                                     class="fas fa-times text-red-600 dark:text-red-400 mr-1.5 mt-0.5"></i>
-                                                <span id="hotel-con1">Expensive Parking</span>
-                                            </li>
+                                                <span id="hotel-con1">Expensive Parking</span></li>
                                             <li class="flex items-start"><i
                                                     class="fas fa-times text-red-600 dark:text-red-400 mr-1.5 mt-0.5"></i>
-                                                <span id="hotel-con2">Small Gym</span>
-                                            </li>
+                                                <span id="hotel-con2">Small Gym</span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -340,8 +336,15 @@
                     <div class="text-xs uppercase tracking-wider mt-1 opacity-80" data-key="countdown.secs">Secs</div>
                 </div>
             </div>
-            <p class="mt-8 text-blue-100 text-sm font-medium" data-key="countdown.date">10 December 2025 • Mark your
-                calendars</p>
+
+            <!-- Updated Calendar Link with ID -->
+            <a id="calendar-link"
+                href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=TripSynapse+Launch+Day&dates=20251210T080000Z/20251210T180000Z&details=The+official+launch+of+TripSynapse.+Think+Smart.+Travel+Smart.&location=Online"
+                target="_blank" rel="noopener noreferrer"
+                class="mt-8 text-blue-100 text-sm font-medium hover:text-white hover:underline transition-colors inline-block"
+                data-key="countdown.date">
+                10 December 2025 • Mark your calendars
+            </a>
         </div>
     </section>
 
@@ -658,12 +661,12 @@
                             </a>
                             <!-- Updated Facebook Link -->
                             <a href="construction.html"
-                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">
+                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all construction-link">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                             <!-- Updated WhatsApp Link -->
                             <a href="construction.html"
-                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all">
+                                class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all construction-link">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -677,7 +680,7 @@
                         <li><a href="#pricing" class="hover:text-white transition-colors"
                                 data-key="nav.pricing">Pricing</a></li>
                         <!-- Updated Chrome Link -->
-                        <li><a href="construction.html" class="hover:text-white transition-colors"
+                        <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.chrome">Chrome Extension</a></li>
                     </ul>
                 </div>
@@ -685,11 +688,11 @@
                     <h4 class="text-white font-bold mb-4" data-key="footer.company">Company</h4>
                     <ul class="space-y-2 text-sm">
                         <!-- Updated Company Links -->
-                        <li><a href="construction.html" class="hover:text-white transition-colors"
+                        <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.about">About</a></li>
-                        <li><a href="construction.html" class="hover:text-white transition-colors"
+                        <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.blog">Blog</a></li>
-                        <li><a href="construction.html" class="hover:text-white transition-colors"
+                        <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.contact">Contact</a></li>
                     </ul>
                 </div>
@@ -697,9 +700,9 @@
                     <h4 class="text-white font-bold mb-4" data-key="footer.legal">Legal</h4>
                     <ul class="space-y-2 text-sm">
                         <!-- Updated Legal Links -->
-                        <li><a href="construction.html" class="hover:text-white transition-colors"
+                        <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.privacy">Privacy Policy</a></li>
-                        <li><a href="construction.html" class="hover:text-white transition-colors"
+                        <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.terms">Terms of Service</a></li>
                     </ul>
                 </div>
@@ -997,7 +1000,6 @@
         const translations = {
             en: {
                 "nav.howItWorks": "How it Works",
-                // ... (rest of translations remain same) ...
                 "nav.whyUs": "Why Us",
                 "nav.useCases": "Use Cases",
                 "nav.pricing": "Pricing",
@@ -1019,6 +1021,8 @@
                 "countdown.mins": "Mins",
                 "countdown.secs": "Secs",
                 "countdown.date": "10 December 2025 • Mark your calendars",
+                "calendar.eventTitle": "TripSynapse Launch Day",
+                "calendar.eventDetails": "The official launch of TripSynapse. Think Smart. Travel Smart.",
                 "problem.title": "Review Fatigue is Real",
                 "problem.subtitle": "Booking a hotel shouldn't feel like a research project. Why is it so hard to get a straight answer?",
                 "problem.card1.title": "Overwhelming Volume",
@@ -1128,6 +1132,8 @@
                 "countdown.mins": "Min",
                 "countdown.secs": "Sec",
                 "countdown.date": "10 Decembrie 2025 • Notează în calendar",
+                "calendar.eventTitle": "TripSynapse Dată Lansare",
+                "calendar.eventDetails": "Lansarea oficială a TripSynapse. Gândește Inteligent. Călătorește Inteligent.",
                 "problem.title": "Oboseala cauzată de recenzii e reală",
                 "problem.subtitle": "Rezervarea unui hotel nu ar trebui să fie un proiect de cercetare. De ce e atât de greu să primești un răspuns clar?",
                 "problem.card1.title": "Volum Copleșitor",
@@ -1231,6 +1237,19 @@
                     el.innerHTML = translations[currentLang][key];
                 }
             });
+
+            // Update construction links dynamically
+            const constructionLinks = document.querySelectorAll('.construction-link');
+            constructionLinks.forEach(link => {
+                link.href = `construction.html?lang=${currentLang}`;
+            });
+
+            // Update Calendar Link Dynamically
+            const calendarLink = document.getElementById('calendar-link');
+            const eventTitle = encodeURIComponent(translations[currentLang]["calendar.eventTitle"]);
+            const eventDetails = encodeURIComponent(translations[currentLang]["calendar.eventDetails"]);
+            // Base URL + dynamic params
+            calendarLink.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=20251210T080000Z/20251210T180000Z&details=${eventDetails}&location=Online`;
 
             updateHotelDisplay();
         }

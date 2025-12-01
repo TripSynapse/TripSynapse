@@ -160,6 +160,13 @@
         // --- 3. Multi-Language Logic ---
         let currentLang = 'en';
 
+        // Check URL param immediately on load
+        const urlParams = new URLSearchParams(window.location.search);
+        const langParam = urlParams.get('lang');
+        if (langParam === 'ro') {
+            currentLang = 'ro';
+        }
+
         const translations = {
             en: {
                 "nav.back": "Back to Home",
@@ -223,11 +230,10 @@
             }
         ];
 
-        // Store the current random index so switching languages keeps the same message
         let currentMessageIndex = 0;
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ro' : 'en';
+        function updateUI() {
+            // Update Lang Button Text
             const code = currentLang === 'en' ? 'EN' : 'RO';
             document.getElementById('lang-code').innerText = code;
 
@@ -240,8 +246,17 @@
                 }
             });
 
-            // Refresh the current funny message in the new language
-            renderFunnyContent(currentMessageIndex);
+            // Refresh the current funny message in the correct language
+            // (Only if content is already loaded, otherwise loadFunnyContent will handle it)
+            const container = document.getElementById('funny-content');
+            if (container.children.length > 0) {
+                renderFunnyContent(currentMessageIndex);
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ro' : 'en';
+            updateUI();
         }
 
         function loadFunnyContent() {
@@ -267,7 +282,8 @@
             `;
         }
 
-        // Initial load
+        // Initial setup
+        updateUI();
         loadFunnyContent();
 
         // --- 4. Countdown Timer Logic ---
