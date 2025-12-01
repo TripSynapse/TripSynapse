@@ -93,8 +93,9 @@
                     <a href="#how-it-works" data-key="nav.howItWorks"
                         class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">How
                         it Works</a>
-                    <a href="#why-us" data-key="nav.whyUs"
-                        class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Why
+                    <!-- Updated Why Us Link -->
+                    <a href="why-us.html" data-key="nav.whyUs"
+                        class="construction-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Why
                         Us</a>
                     <a href="#use-cases" data-key="nav.useCases"
                         class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Use
@@ -154,8 +155,9 @@
                 <a href="#how-it-works" data-key="nav.howItWorks"
                     class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">How
                     it Works</a>
-                <a href="#why-us" data-key="nav.whyUs"
-                    class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Why
+                <!-- Updated Why Us Link Mobile -->
+                <a href="why-us.html" data-key="nav.whyUs"
+                    class="construction-link text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Why
                     Us</a>
                 <a href="#use-cases" data-key="nav.useCases"
                     class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Use
@@ -1238,10 +1240,12 @@
                 }
             });
 
-            // Update construction links dynamically
+            // Update construction links dynamically (Now includes why-us.html links)
             const constructionLinks = document.querySelectorAll('.construction-link');
             constructionLinks.forEach(link => {
-                link.href = `construction.html?lang=${currentLang}`;
+                // Check if it's already a query param link to avoid double appending
+                const baseUrl = link.getAttribute('href').split('?')[0];
+                link.href = `${baseUrl}?lang=${currentLang}`;
             });
 
             // Update Calendar Link Dynamically
