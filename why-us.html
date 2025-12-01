@@ -51,7 +51,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <!-- Logo -->
-                <a href="index.html" class="flex items-center space-x-3 construction-link">
+                <a href="index.html" class="flex items-center space-x-3 construction-link home-link">
                     <img src="logo.jpg" onerror="this.src='https://placehold.co/100x100?text=Logo'"
                         alt="TripSynapse Logo" class="h-10 w-auto brand-logo transition-opacity duration-300">
                     <span class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">TripSynapse</span>
@@ -119,7 +119,7 @@
                 <a href="index.html#pricing" data-key="nav.pricing"
                     class="nav-link text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800">Pricing</a>
                 <a href="index.html"
-                    class="construction-link bg-gradient-brand text-white w-full py-3 rounded-lg font-bold mt-2 text-center">Back
+                    class="construction-link home-link bg-gradient-brand text-white w-full py-3 rounded-lg font-bold mt-2 text-center">Back
                     to Home</a>
             </div>
         </div>
@@ -229,6 +229,7 @@
                 <div>
                     <h4 class="text-white font-bold mb-4" data-key="footer.company">Company</h4>
                     <ul class="space-y-2 text-sm">
+                        <!-- Updated Company Links -->
                         <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.about">About</a></li>
                         <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
@@ -240,6 +241,7 @@
                 <div>
                     <h4 class="text-white font-bold mb-4" data-key="footer.legal">Legal</h4>
                     <ul class="space-y-2 text-sm">
+                        <!-- Updated Legal Links -->
                         <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
                                 data-key="footer.privacy">Privacy Policy</a></li>
                         <li><a href="construction.html" class="hover:text-white transition-colors construction-link"
@@ -361,27 +363,35 @@
                 }
             });
 
-            // Update internal links to preserve language
+            // Update internal links to preserve language (Construction Page)
             document.querySelectorAll('.construction-link').forEach(link => {
                 const base = link.getAttribute('href').split('?')[0];
                 link.href = `${base}?lang=${currentLang}`;
             });
 
+            // Update Home/Nav links to preserve language AND anchor
             document.querySelectorAll('.nav-link').forEach(link => {
-                // For anchor links like index.html#pricing, we need to be careful
-                // We typically want index.html?lang=ro#pricing
+                // Get the raw href (e.g., "index.html#pricing")
                 let href = link.getAttribute('href');
+                let newHref = "";
+
                 if (href.includes('#')) {
                     const [page, hash] = href.split('#');
-                    // Check if it already has query
+                    // Check if page part already has query params (unlikely here but safe to check)
                     const separator = page.includes('?') ? '&' : '?';
-                    // Reconstruct
-                    // NOTE: Setting href with query param + hash
-                    link.href = `${page}${separator}lang=${currentLang}#${hash}`;
+                    newHref = `${page}${separator}lang=${currentLang}#${hash}`;
                 } else {
                     const base = href.split('?')[0];
-                    link.href = `${base}?lang=${currentLang}`;
+                    newHref = `${base}?lang=${currentLang}`;
                 }
+
+                link.href = newHref;
+            });
+
+            // Specifically target the Home Logo Link which has class 'home-link'
+            document.querySelectorAll('.home-link').forEach(link => {
+                const base = link.getAttribute('href').split('?')[0];
+                link.href = `${base}?lang=${currentLang}`;
             });
         }
 
