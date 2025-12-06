@@ -70,6 +70,9 @@
                         Cases</a>
                     <a href="index.html#pricing" data-key="nav.pricing"
                         class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">Pricing</a>
+                    <!-- Added FAQ Link -->
+                    <a href="index.html#faq" data-key="nav.faq"
+                        class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-orange transition-colors">FAQ</a>
 
                     <!-- Language Toggle -->
                     <button onclick="toggleLanguage()"
@@ -118,6 +121,9 @@
                     Cases</a>
                 <a href="index.html#pricing" data-key="nav.pricing"
                     class="nav-link text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800">Pricing</a>
+                <!-- Added FAQ Link Mobile -->
+                <a href="index.html#faq" data-key="nav.faq"
+                    class="nav-link text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800">FAQ</a>
                 <a href="index.html"
                     class="construction-link home-link bg-gradient-brand text-white w-full py-3 rounded-lg font-bold mt-2 text-center">Back
                     to Home</a>
@@ -363,29 +369,27 @@
                 }
             });
 
-            // Update internal links to preserve language (Construction Page)
+            // Update internal links to preserve language
             document.querySelectorAll('.construction-link').forEach(link => {
                 const base = link.getAttribute('href').split('?')[0];
                 link.href = `${base}?lang=${currentLang}`;
             });
 
-            // Update Home/Nav links to preserve language AND anchor
             document.querySelectorAll('.nav-link').forEach(link => {
-                // Get the raw href (e.g., "index.html#pricing")
+                // For anchor links like index.html#pricing, we need to be careful
+                // We typically want index.html?lang=ro#pricing
                 let href = link.getAttribute('href');
-                let newHref = "";
-
                 if (href.includes('#')) {
                     const [page, hash] = href.split('#');
-                    // Check if page part already has query params (unlikely here but safe to check)
+                    // Check if it already has query
                     const separator = page.includes('?') ? '&' : '?';
-                    newHref = `${page}${separator}lang=${currentLang}#${hash}`;
+                    // Reconstruct
+                    // NOTE: Setting href with query param + hash
+                    link.href = `${page}${separator}lang=${currentLang}#${hash}`;
                 } else {
                     const base = href.split('?')[0];
-                    newHref = `${base}?lang=${currentLang}`;
+                    link.href = `${base}?lang=${currentLang}`;
                 }
-
-                link.href = newHref;
             });
 
             // Specifically target the Home Logo Link which has class 'home-link'
