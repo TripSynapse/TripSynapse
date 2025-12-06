@@ -81,6 +81,26 @@
                 transform: translateY(0);
             }
         }
+
+        /* Loader for Iframe */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -129,7 +149,7 @@
                         <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
                     </button>
 
-                    <button data-key="nav.cta"
+                    <button onclick="openWaitlistForm()" data-key="nav.cta"
                         class="bg-gradient-brand hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-blue/20 text-sm">
                         Join the Demo waitlist
                     </button>
@@ -173,7 +193,7 @@
                     class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">Pricing</a>
                 <a href="#faq" data-key="nav.faq"
                     class="text-base font-medium text-slate-600 dark:text-slate-300 py-2 border-b border-slate-50 dark:border-slate-800 mobile-link">FAQ</a>
-                <button data-key="nav.cta"
+                <button onclick="openWaitlistForm()" data-key="nav.cta"
                     class="bg-gradient-brand text-white w-full py-3 rounded-lg font-bold mt-2">Join the Demo
                     waitlist</button>
             </div>
@@ -211,7 +231,7 @@
                         and the honest truth about your hotel.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                        <button
+                        <button onclick="openWaitlistForm()"
                             class="bg-gradient-brand hover:opacity-90 text-white px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-lg shadow-brand-blue/30 flex items-center justify-center gap-2">
                             <span data-key="hero.ctaPrimary">Join the Demo waitlist</span> <i
                                 class="fas fa-arrow-right"></i>
@@ -532,7 +552,7 @@
                                 Maps only</span></li>
                     </ul>
                     <!-- Added group-hover to button -->
-                    <button
+                    <button onclick="openWaitlistForm()"
                         class="w-full py-3 rounded-lg font-bold border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 group-hover:border-brand-blue group-hover:text-brand-blue dark:group-hover:border-brand-blue dark:group-hover:text-brand-blue transition-colors duration-200"
                         data-key="pricing.ctaFree">Get Started</button>
                 </div>
@@ -561,7 +581,7 @@
                                 Maps only</span></li>
                     </ul>
                     <!-- Fixed: Button now lights up purple when the CARD is hovered (group-hover) -->
-                    <button
+                    <button onclick="openWaitlistForm()"
                         class="w-full py-3 rounded-lg font-bold bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white group-hover:bg-brand-purple group-hover:text-white hover:bg-brand-purple hover:text-white transition-colors duration-200"
                         data-key="pricing.ctaStd">Choose Standard</button>
                 </div>
@@ -594,7 +614,7 @@
                                 class="fas fa-check text-brand-blue mr-3"></i> <span data-key="pricing.pro.f4">Scam
                                 Detection Shield</span></li>
                     </ul>
-                    <button
+                    <button onclick="openWaitlistForm()"
                         class="w-full py-3 rounded-lg font-bold bg-brand-blue text-white hover:bg-blue-800 transition-colors"
                         data-key="pricing.ctaPro">Choose Jetsetter</button>
                 </div>
@@ -602,7 +622,7 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- FAQ -->
     <section id="faq" class="py-20 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -610,7 +630,6 @@
                     data-key="faq.title">Frequently Asked Questions</h2>
             </div>
 
-            <!-- Restored Accordion Container -->
             <div class="space-y-2" id="accordion-container">
                 <div class="border-b border-slate-200 dark:border-slate-800">
                     <button
@@ -756,15 +775,74 @@
         </div>
     </div>
 
+    <!-- Form Modal -->
+    <div id="form-modal" class="fixed inset-0 z-[110] hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-sm transition-opacity opacity-0 fade-in-backdrop"
+            onclick="closeFormModal()"></div>
+
+        <div class="relative z-10 w-full h-full flex items-center justify-center p-0 md:p-4">
+            <!-- Updated Modal Container: Much wider and taller (90vw/90vh) to fit the form -->
+            <div
+                class="relative bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden w-full h-full md:w-[90vw] md:max-w-6xl md:h-[90vh] transform transition-all scale-95 opacity-0 fade-in-modal border border-slate-200 dark:border-slate-700 flex flex-col">
+
+                <!-- Modal Header -->
+                <div
+                    class="flex justify-between items-center p-4 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 z-20 shrink-0">
+                    <h3 class="font-bold text-lg text-slate-900 dark:text-white">Join Demo Waitlist</h3>
+                    <button onclick="closeFormModal()"
+                        class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Iframe Container with Loader -->
+                <div class="flex-1 relative bg-white dark:bg-slate-900 w-full min-h-0">
+                    <div id="form-loader"
+                        class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-10">
+                        <div class="loader"></div>
+                    </div>
+                    <iframe id="google-form-frame" src="" class="w-full h-full border-0"
+                        onload="document.getElementById('form-loader').style.display='none';"></iframe>
+                </div>
+
+                <!-- Footer removed to maximize form space, relying on Header X button -->
+            </div>
+        </div>
+    </div>
+
     <style>
         /* Modal Animation Utilities */
-        #video-modal.flex .fade-in-backdrop {
+        #video-modal.flex .fade-in-backdrop,
+        #form-modal.flex .fade-in-backdrop {
             opacity: 1;
         }
 
-        #video-modal.flex .fade-in-modal {
+        #video-modal.flex .fade-in-modal,
+        #form-modal.flex .fade-in-modal {
             opacity: 1;
             transform: scale(100%);
+        }
+
+        /* Loader for Iframe */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 
@@ -817,7 +895,6 @@
 
         // ... (Existing Countdown Logic) ...
         function updateCountdown() {
-            // UPDATED LAUNCH DATE: 17 December 2025
             const launchDate = new Date("December 17, 2025 00:00:00").getTime();
             const now = new Date().getTime();
             const distance = launchDate - now;
@@ -987,6 +1064,41 @@
             video.currentTime = 0;
         }
 
+        // --- FORM MODAL LOGIC ---
+        function openWaitlistForm() {
+            const modal = document.getElementById('form-modal');
+            const iframe = document.getElementById('google-form-frame');
+            const loader = document.getElementById('form-loader');
+
+            // Updated English Form Link
+            const enForm = "https://forms.gle/q8jkX3UfcgqbsctP9";
+            // Note: If the short link doesn't display in the iframe, use the full docs.google.com link ending in viewform?embedded=true
+
+            const roForm = "https://forms.gle/nats1gTkDiREWbG4A";
+
+            const url = currentLang === 'ro' ? roForm : enForm;
+
+            // Reset loader
+            loader.style.display = 'flex';
+            iframe.src = url;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('flex');
+            }, 10);
+        }
+
+        function closeFormModal() {
+            const modal = document.getElementById('form-modal');
+            const iframe = document.getElementById('google-form-frame');
+
+            modal.classList.remove('flex');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                iframe.src = ''; // Clear src to stop playing/loading
+            }, 300);
+        }
+
         // --- THEME LOGIC ---
         function toggleTheme() {
             if (document.documentElement.classList.contains('dark')) {
@@ -1013,6 +1125,7 @@
             document.documentElement.classList.remove('dark');
         }
         updateLogo();
+
 
         // --- Multi-Language Logic ---
         const translations = {
@@ -1120,7 +1233,7 @@
                 "footer.product": "Product",
                 "footer.chrome": "Chrome Extension",
                 "footer.company": "Company",
-                "footer.about": "About",
+                "footer.about": "Despre",
                 "footer.blog": "Blog",
                 "footer.contact": "Contact",
                 "footer.legal": "Legal",
@@ -1242,11 +1355,8 @@
             }
         };
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ro' : 'en';
-
+        function updateUI() {
             const code = currentLang === 'en' ? 'EN' : 'RO';
-
             document.getElementById('lang-code-desktop').innerText = code;
             document.getElementById('lang-code-mobile-header').innerText = code;
 
@@ -1276,30 +1386,19 @@
             updateHotelDisplay();
         }
 
-        // --- 4. Countdown Timer Logic ---
-        function updateCountdown() {
-            const launchDate = new Date("December 17, 2025 00:00:00").getTime();
-            const now = new Date().getTime();
-            const distance = launchDate - now;
-
-            if (distance < 0) {
-                const msg = currentLang === 'ro' ? "Ne-am lansat! Întoarce-te acasă." : "We have launched! Go back home.";
-                document.getElementById("countdown-container").innerHTML = `<div class='text-2xl font-bold text-brand-blue dark:text-brand-orange'>${msg}</div>`;
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ro' : 'en';
+            updateUI();
         }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+
+        // Initialize
+        // --- CHECK URL PARAMETER ON LOAD ---
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('lang') === 'ro') {
+            currentLang = 'ro';
+        }
+        updateUI();
+
     </script>
 </body>
 
