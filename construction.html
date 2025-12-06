@@ -96,7 +96,7 @@
             <div
                 class="bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-xl">
                 <h2 class="text-xl font-bold mb-6 text-slate-500 dark:text-slate-400 uppercase tracking-widest"
-                    data-key="countdown.title">Official Launching In</h2>
+                    data-key="countdown.title">Demo Launching In</h2>
                 <div class="flex justify-center gap-3 md:gap-6 text-center" id="countdown-container">
                     <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 w-16 md:w-20">
                         <div id="days" class="text-2xl md:text-3xl font-bold text-brand-blue dark:text-white">00</div>
@@ -121,7 +121,11 @@
                         </div>
                     </div>
                 </div>
-                <p class="mt-6 text-slate-400 text-sm" data-key="countdown.date">17 December 2025</p>
+                <div class="mt-6 text-center">
+                    <p class="text-slate-400 text-sm mb-2" data-key="countdown.date">17 December 2025</p>
+                    <span class="text-slate-500 dark:text-slate-400 text-xs italic" data-key="countdown.note">*Official
+                        launching coming soon</span>
+                </div>
             </div>
 
             <div class="mt-12">
@@ -140,67 +144,6 @@
     </footer>
 
     <script>
-        // ... (Existing Theme Logic) ...
-        // ... (Existing Logo Logic) ...
-        // ... (Existing Multi-Language Logic) ...
-
-        const translations = {
-            en: {
-                "nav.back": "Back to Home",
-                "countdown.title": "Official Launching In",
-                "countdown.days": "Days",
-                "countdown.hours": "Hours",
-                "countdown.mins": "Mins",
-                "countdown.secs": "Secs",
-                "countdown.date": "17 December 2025",
-                "btn.another": "Show me another excuse",
-                "footer.rights": "All rights reserved."
-            },
-            ro: {
-                "nav.back": "Înapoi la Pagina Principală",
-                "countdown.title": "Lansare Oficială În",
-                "countdown.days": "Zile",
-                "countdown.hours": "Ore",
-                "countdown.mins": "Min",
-                "countdown.secs": "Sec",
-                "countdown.date": "17 Decembrie 2025",
-                "btn.another": "Arată-mi altă scuză",
-                "footer.rights": "Toate drepturile rezervate."
-            }
-        };
-
-        // ... (Existing Funny Messages Logic) ...
-
-        // ... (Existing UI update Logic) ...
-
-        // --- 4. Countdown Timer Logic ---
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        function updateCountdown() {
-            const launchDate = new Date("December 17, 2025 00:00:00").getTime();
-            const now = new Date().getTime();
-            const distance = launchDate - now;
-
-            if (distance < 0) {
-                const msg = currentLang === 'ro' ? "Ne-am lansat! Întoarce-te acasă." : "We have launched! Go back home.";
-                document.getElementById("countdown-container").innerHTML = `<div class='text-2xl font-bold text-brand-blue dark:text-brand-orange'>${msg}</div>`;
-                return;
-            }
-            // ... (Existing calculations and DOM updates) ...
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-        }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-
-        // ... (Existing Theme/Logo Logic & Initial Setup) ...
         // --- 1. Dark Mode Check ---
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -236,6 +179,33 @@
         if (langParam === 'ro') {
             currentLang = 'ro';
         }
+
+        const translations = {
+            en: {
+                "nav.back": "Back to Home",
+                "countdown.title": "Demo Launching In",
+                "countdown.days": "Days",
+                "countdown.hours": "Hours",
+                "countdown.mins": "Mins",
+                "countdown.secs": "Secs",
+                "countdown.date": "17 December 2025",
+                "countdown.note": "*Official launching coming soon",
+                "btn.another": "Show me another excuse",
+                "footer.rights": "All rights reserved."
+            },
+            ro: {
+                "nav.back": "Înapoi la Pagina Principală",
+                "countdown.title": "Lansare Demo În",
+                "countdown.days": "Zile",
+                "countdown.hours": "Ore",
+                "countdown.mins": "Min",
+                "countdown.secs": "Sec",
+                "countdown.date": "17 Decembrie 2025",
+                "countdown.note": "*Lansarea oficială în curând",
+                "btn.another": "Arată-mi altă scuză",
+                "footer.rights": "Toate drepturile rezervate."
+            }
+        };
 
         const funnyMessages = [
             {
@@ -292,7 +262,7 @@
             });
 
             // Update links to keep language (home-link targets logo and back button)
-            document.querySelectorAll('.home-link').forEach(link => {
+            document.querySelectorAll('.construction-link').forEach(link => {
                 const base = link.getAttribute('href').split('?')[0];
                 link.href = `${base}?lang=${currentLang}`;
             });
@@ -336,6 +306,33 @@
         // Initial setup
         updateUI();
         loadFunnyContent();
+
+        // --- 4. Countdown Timer Logic ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function updateCountdown() {
+            const launchDate = new Date("December 17, 2025 00:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            if (distance < 0) {
+                const msg = currentLang === 'ro' ? "Ne-am lansat! Întoarce-te acasă." : "We have launched! Go back home.";
+                document.getElementById("countdown-container").innerHTML = `<div class='text-2xl font-bold text-brand-blue dark:text-brand-orange'>${msg}</div>`;
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 
